@@ -4,6 +4,11 @@ print "Welcome to Ada's Computer Candy Machine!\
 #get user input
 print "How much money do you have? > $"
 money = gets.chomp.to_f
+while (money == nil || !money.is_a?(Numeric) || money < 0)
+  print "Your input is invalid. Try again"
+  print "How much money do you have? > $"
+  money = gets.chomp.to_f
+end
 puts "$#{money}, that's all?
 Well, lemme tell ya what we got here.\n"
 
@@ -11,6 +16,11 @@ Well, lemme tell ya what we got here.\n"
 print "A. $0.65 Twix\nB. $0.50 Chips\nC. $0.75 Nutter Butter\nD. $0.65 Peanut Butter Cup\nE. $0.55 Juicy Fruit Gum\n"
 print "So, what'll ya have? >"
 answer = gets.chomp.upcase
+while (answer != "A" && answer != "B" && answer != "C" && answer != "D" && answer != "E")
+  puts "Your input is invalid. Try again"
+  puts "So, what'll ya have? >"
+  answer = gets.chomp.upcase
+end
 
 #calculate change and output response
 table = {
@@ -34,5 +44,3 @@ for i in 0..table.length do
       break
   end
 end
-
-puts "Invalid choice!"
