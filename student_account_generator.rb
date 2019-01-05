@@ -12,7 +12,7 @@ count = 0
 while(count < student_names.length)
   num = rand(111111...999999).to_s
   if (!student_ids.include?(num))
-    count = count + 1
+    count += 1
     student_ids << num
   end
 end
