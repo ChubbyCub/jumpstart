@@ -43,9 +43,7 @@ puts "Hello! We are going to total some numbers!"
 puts "Enter a negative number to quit."
 
 total = 0
-input1 = 1
-input2 = 1
-while (input1 > 0 && input2 > 0)
+while (true)
   print "Enter your number "
   input1 = gets.chomp.to_i
   print "Enter your number again "
