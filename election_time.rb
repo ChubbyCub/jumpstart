@@ -40,11 +40,16 @@ vote_result.each {|key, value|
     reverse_map[value] << key
   end
 }
-
-puts "The winner is #{vote_result.key(vote_result.values.max)}"
+puts "#{reverse_map}"
 
 reverse_map.each do |key, value|
-  if(value.length > 1)
+  if(reverse_map[key].length > 1 && key != reverse_map.keys.max)
+    puts "The winner is #{vote_result.key(vote_result.values.max)}"
     puts "The following candidates #{reverse_map[key]} are tied. Each got #{key} votes"
+  end
+
+  if(reverse_map[key].length > 1 && key == reverse_map.keys.max)
+    puts "We cannot determine who the winner is.
+    The maximum votes of #{key} belong to the following candidates #{reverse_map[key]}"
   end
 end
