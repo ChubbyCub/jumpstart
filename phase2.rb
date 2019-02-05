@@ -1,5 +1,5 @@
 class Vehicle
-  #Vehicle constructor
+  # Vehicle constructor
   def initialize (distance, gas_price)
     @distance = distance
     @gas_price = gas_price
@@ -8,7 +8,7 @@ class Vehicle
   def set_mpg
     print "  Average miles per gallon: "
     @mpg = gets.chomp.to_f
-    while (@mpg == nil || !@mpg.is_a?(Numeric) || @mpg <= 0)
+    while @mpg == nil || !@mpg.is_a?(Numeric) || @mpg <= 0
       puts "  Invalid input! Please enter your average miles per gallon again!"
       print "  Average miles per gallon: "
       @mpg = gets.chomp.to_f
@@ -18,7 +18,7 @@ class Vehicle
   def set_capacity
     print "  Gallon capacity: "
     @capacity = gets.chomp.to_f
-    while (@capacity == nil || !@capacity.is_a?(Numeric) || @capacity <= 0)
+    while @capacity == nil || !@capacity.is_a?(Numeric) || @capacity <= 0
       puts "  Invalid input! Please enter your gallon capacity!"
       print "  Gallon capacity: "
       @capacity = gets.chomp.to_f
@@ -28,7 +28,7 @@ class Vehicle
   def set_cost
     print "  Vehicle maintenance cost: "
     @cost = gets.chomp.to_f
-    while (@cost == nil || !@cost.is_a?(Numeric) || @cost <= 0)
+    while @cost == nil || !@cost.is_a?(Numeric) || @cost <= 0
       puts "  Invalid input! Please enter your vehicle maintenance cost again!"
       print "  Vehicle maintence cost: "
       @cost = gets.chomp.to_f
@@ -56,48 +56,47 @@ puts "Welcome to the road trip vehicle compare program! Please provide some info
 
 travel_distance = 3000
 gas_price = 3
-# min = nil
+min = nil
 vehicles = Array.new
-#create four vehicles
+# Create four vehicles and find the minimum total cost of each vehicle
 (1..4).each do |num|
   puts "Vehicle details for person #{num}:"
   vehicle = Vehicle.new travel_distance, gas_price
   vehicle.set_mpg
   vehicle.set_capacity
   vehicle.set_cost
-  # if(min == nil)
-  #   min = vehicle.calculate_total_cost
-  # else
-  #   min = Math.min(min, vehicle.calculate_total_cost)
-  # end
+  if min == nil
+    min = vehicle.calculate_total_cost
+  else
+    min = [min, vehicle.calculate_total_cost].min
+  end
   vehicles << vehicle
-
 end
+
+# puts "#{min}"
 puts " "
 puts "===SUMMARY==="
 
 sum_cost = 0
 sum_gallons = 0
-#min_cost = vehicles[0].calculate_total_cost
 min_vehicle_index = 0
 ties = Array.new
-#calculate sum_cost, sum_gallons, and min_cost
+# Calculate sum_cost, sum_gallons, and min_cost
 vehicles.each_index {|i|
   sum_cost += vehicles[i].calculate_total_cost
   sum_gallons += vehicles[i].calculate_gallons
-  # Ignore ties because the same amount of money is saved.
 
-  if(vehicles[i].calculate_total_cost < vehicles[min_vehicle_index].calculate_total_cost)
+  if vehicles[i].calculate_total_cost < min
     min_vehicle_index = i
     ties.clear
   end
 
-  if(vehicles[i].calculate_total_cost == vehicles[min_vehicle_index])
+  if vehicles[i].calculate_total_cost == min
     ties << i
   end
 }
 
-puts "#{ties}"
+# puts "#{ties}"
 
 puts "Distance per gas tank:"
 vehicles.each_index {|i|
@@ -119,7 +118,12 @@ vehicles.each_index {|i|
 
 puts " "
 puts "Total gallons of fuel burnt if all people travel separately in their own vehicle: %0.2f"%[sum_gallons]
-puts "Best choice of vehicle to carpool based on fuel economy: Vehicle for person #{min_vehicle_index + 1}"
+if ties.length > 1
+  puts "The following vehicles have the best fuel economy:"
+  ties.each { |x| puts "Vehicle ##{x + 1}" }
+else
+  puts "Best choice of vehicle to carpool based on fuel economy: Vehicle for person #{min_vehicle_index + 1}"
+end
 puts "By carpooling in the most economical vehicle, a total of $%0.2f will be saved."%[sum_cost - vehicles[min_vehicle_index].calculate_total_cost]
 puts " "
 puts "Thank you for using the road trip vehicle compare program!"

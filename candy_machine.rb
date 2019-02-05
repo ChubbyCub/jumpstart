@@ -1,7 +1,7 @@
 print "Welcome to Ada's Computer Candy Machine!\
 (All candy provided is virtual)\n"
 
-#get user input
+# Get users' input
 print "How much money do you have? > $"
 money = gets.chomp.to_f
 while (money == nil || !money.is_a?(Numeric) || money < 0)
@@ -12,28 +12,31 @@ end
 puts "$#{money}, that's all?
 Well, lemme tell ya what we got here.\n"
 
-#print menu
+# Print menu
 table = {
-  "A" => 0.65,
-  "B" => 0.50,
-  "C" => 0.75,
-  "D" => 0.65,
-  "E" => 0.55
+  "A" => { "Name" => "Twix", "Price" => 0.65},
+  "B" => { "Name" => "Chips", "Price" => 0.50 },
+  "C" => { "Name" => "Nutter Butter", "Price" => 0.75 },
+  "D" => { "Name" => "Peanut Butter Cup", "Price" => 0.65 },
+  "E" => { "Name" => "Juicy Fruit Gum", "Price" => 0.55 }
 }
-print "A. $0.65 Twix\nB. $0.50 Chips\nC. $0.75 Nutter Butter\nD. $0.65 Peanut Butter Cup\nE. $0.55 Juicy Fruit Gum\n"
+table.each do |key, value|
+  puts "#{key} $#{table[key]["Price"]} #{table[key]["Name"]}"
+end
+
 print "So, what'll ya have? >"
 answer = gets.chomp.upcase
-while (!table.key?(answer))
+while !table.key?(answer)
   puts "Your input is invalid. Try again"
   puts "So, what'll ya have? >"
   answer = gets.chomp.upcase
 end
 
-#calculate change and output response
-change = (money - table[answer]).to_f
-if(change < 0)
+# Calculate change and output response
+change = (money - table[answer]["Price"]).to_f
+if change < 0
   puts "You're broke. Take your $#{money} and go elsewhere."
-elsif(change > 0)
+elsif change > 0
   puts "Please take your candy, and your $#{change} change!"
 else
   puts "Please take your candy!"

@@ -1,59 +1,47 @@
-student_names = Array.new
-student_ids = Array.new
-student_emails = Array.new
+$student_names = Array.new
+$student_ids = Array.new
+$student_emails = Array.new
 
-File.open("student_names.txt").each do |line|
-    student_names << line.chomp
-end
-
-# puts "#{student_names}"
-
-count = 0
-while(count < student_names.length)
-  num = rand(111111...999999).to_s
-  if (!student_ids.include?(num))
-    count += 1
-    student_ids << num
+def get_id
+  id = 0
+  while true
+    id = rand(111111...999999)
+    if !$student_ids.include?(id)
+      break
+    end
   end
+  return id
 end
 
-#puts "#{student_ids}"
-
-temp_name_array = Array.new
-
-for i in 0...student_names.length do
-  name = student_names[i].split
-  #puts "#{name}"
-  if(name.length > 2)
-    first_letter = name[0][0] + name [1][0]
+def get_email_address(full_name, id)
+  names = full_name.split
+  email_address = ""
+  if names.length > 2
+    email_address = names[0][0] + names[1][0] + names[names.length - 1]
   else
-    first_letter = name[0][0]
+    email_address = names[0][0] + names[names.length - 1]
   end
-  #puts "#{first_letter}"
-  last_name = name[name.length - 1]
-  first_last = first_letter + last_name
-  temp_name_array << first_last
+  last_three_digits = id.slice(id.length - 3, 3)
+
+  email_address = email_address.upcase + last_three_digits + "@adadevelopersacademy.org"
 end
 
-#puts "#{temp_name_array}"
+# Read names from a text file and generate alias for emails
+File.open("student_names.txt").each do |line|
+  full_name = line.chomp.lstrip.rstrip
+  $student_names << full_name
 
-last_three_array = Array.new
+  id = get_id()
+  $student_ids << id
 
-for i in 0...student_ids.length do
-  id = student_ids[i].to_s
-  last_three_digits = id[(id.length - 3)..(id.length - 1)]
-  last_three_array << last_three_digits
+  email_address = get_email_address(full_name, id.to_s)
+  $student_emails << email_address
 end
 
-#puts "#{last_three_array}"
+# puts "#{$student_names}"
+# puts "#{$student_ids}"
+# puts "#{$student_emails}"
 
-for i in 0...temp_name_array.length do
-  email = temp_name_array[i] + last_three_array[i] + "@adadevelopersacademy.org"
-  student_emails << email
-end
-
-#puts "#{student_emails}"
-
-for i in 0...student_names.length do
-  puts "#{student_names[i]} : #{student_ids[i]} : #{student_emails[i]}"
+$student_names.length.times do |i|
+  puts "#{$student_names[i]} : #{$student_ids[i]} : #{$student_emails[i]}"
 end
